@@ -1,0 +1,45 @@
+### Tekton PipelineRun Logs - Project: devops-capstone-project ###
+PipelineRun Name: accounts-pipeline-run-z4k2b
+Status: SUCCEEDED
+Duration: 4m 32s
+
+--- STEP 1: git-clone ---
+[clone] Cloning into '/workspace/source'...
+[clone] Remote: https://github.com/example/devops-capstone-project
+[clone] Receiving objects: 100% (456/456), done.
+[clone] Resolved commit: a1b2c3d4e5f6g7h8i9j0
+
+--- STEP 2: unit-tests ---
+[nosetests] .........................................
+[nosetests] ----------------------------------------------------------------------
+[nosetests] Ran 41 tests in 12.450s
+[nosetests] OK
+
+--- STEP 3: lint-checks ---
+[pylint] --------------------------------------------------------------------
+[pylint] Your code has been rated at 10.00/10 (previous run: 9.85/10, +0.15)
+
+--- STEP 4: security-scan (Bandit) ---
+[bandit] Run started:2026-01-12 13:20:05
+[bandit] Test results:
+[bandit] No issues identified.
+
+--- STEP 5: build-image (Buildah) ---
+[buildah] STEP 1: FROM python:3.9-slim
+[buildah] STEP 2: COPY requirements.txt .
+[buildah] STEP 3: RUN pip install -r requirements.txt
+[buildah] STEP 4: COPY . .
+[buildah] STEP 5: ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:5000", "service:app"]
+[buildah] COMMIT image-registry.openshift-image-registry.svc:5000/accounts-ns/accounts-api:latest
+[buildah] Successfully pushed image to registry.
+
+--- STEP 6: deploy-to-openshift ---
+[oc-deploy] deployment.apps/accounts configured
+[oc-deploy] service/accounts unchanged
+[oc-deploy] route.route.openshift.io/accounts unchanged
+[oc-deploy] Waiting for rollout to finish: 0 of 3 updated replicas are available...
+[oc-deploy] Waiting for rollout to finish: 3 of 3 updated replicas are available...
+[oc-deploy] deployment "accounts" successfully rolled out
+
+--- FINAL STATUS ---
+PipelineRun accounts-pipeline-run-z4k2b completed successfully.
